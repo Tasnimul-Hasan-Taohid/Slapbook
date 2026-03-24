@@ -1,9 +1,4 @@
 #!/bin/bash
-# ─────────────────────────────────────────────────────────────
-#  SlapBook Installer
-#  Builds and installs SlapBook to /Applications
-# ─────────────────────────────────────────────────────────────
-
 set -e
 
 RED='\033[0;31m'
@@ -21,8 +16,6 @@ echo "  ║   Slap your Mac. Watch it shatter.    ║"
 echo "  ╚═══════════════════════════════════════╝"
 echo -e "${NC}"
 
-# ── Checks ────────────────────────────────────────────────────
-
 echo -e "${YELLOW}▶ Checking requirements...${NC}"
 
 if ! command -v swift &> /dev/null; then
@@ -38,8 +31,6 @@ if [ "$MACOS_VERSION" -lt 13 ]; then
 fi
 echo -e "${GREEN}✓ macOS $(sw_vers -productVersion)${NC}"
 
-# ── Build ─────────────────────────────────────────────────────
-
 echo ""
 echo -e "${YELLOW}▶ Building SlapBook...${NC}"
 
@@ -52,8 +43,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "${GREEN}✓ Build successful${NC}"
-
-# ── App Bundle ────────────────────────────────────────────────
 
 echo ""
 echo -e "${YELLOW}▶ Creating app bundle...${NC}"
@@ -69,14 +58,7 @@ mkdir -p "$MACOS" "$RESOURCES"
 cp .build/release/SlapBook "$MACOS/SlapBook"
 cp Resources/Info.plist "$CONTENTS/Info.plist"
 
-# App icon placeholder (text-based)
-cat > "$RESOURCES/AppIcon.icns" << 'ICNS'
-ICNS
-# (real icon would go here — see README for icon generation)
-
 echo -e "${GREEN}✓ App bundle created at $APP_DIR${NC}"
-
-# ── Launch Agent (auto-start on login) ───────────────────────
 
 echo ""
 read -p "$(echo -e "${YELLOW}▶ Launch SlapBook automatically at login? [y/N]: ${NC}")" AUTOSTART
@@ -107,8 +89,6 @@ EOF
     launchctl load "$PLIST" 2>/dev/null || true
     echo -e "${GREEN}✓ Auto-start enabled${NC}"
 fi
-
-# ── Launch ────────────────────────────────────────────────────
 
 echo ""
 echo -e "${GREEN}${BOLD}✓ SlapBook installed successfully!${NC}"
